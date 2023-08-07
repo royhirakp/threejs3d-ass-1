@@ -8,7 +8,6 @@ const renderer = new THREE.WebGLRenderer();
 renderer.shadowMap.enabled = true;
 renderer.setSize(window.innerWidth, window.innerHeight);
 const container = document.getElementById("threejs-canvas-container");
-
 container.appendChild(renderer.domElement);
 // document.body.appendChild(renderer.domElement);
 
@@ -248,7 +247,7 @@ renderer.setAnimationLoop(animate);
 /// resize the windp after change the browser window size
 
 renderer.domElement.addEventListener("click", (event) => {
-  console.log("workingggggggg");
+  // console.log("workingggggggg");
   const mouse = new THREE.Vector2();
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -280,7 +279,7 @@ window.addEventListener("resize", function () {
 });
 
 /// ******************************CODE FOR AVTAR CREATION *********************
-const subdomain = "demo"; // Replace with your custom subdomain
+const subdomain = "app1-l6nouw";
 const frame = document.getElementById("frame");
 frame.src = `https://${subdomain}.readyplayer.me/avatar?frameApi`;
 
