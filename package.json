@@ -12,10 +12,12 @@
   "dependencies": {
     "dat.gui": "^0.7.9",
     "parcel": "^2.9.3",
+    "socket.io-client": "^4.7.2",
     "three": "^0.155.0"
   },
   "devDependencies": {
     "@parcel/config-default": "^2.9.3",
+    "buffer": "^6.0.3",
     "parcel-reporter-static-files-copy": "^1.5.2"
   },
   "staticOutPath": "assets"

@@ -1,0 +1,79 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.frame {
+  width: 1080px;
+  height: 800px;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  padding: 20px;
+  font-size: 14px;
+  border: none;
+}
+
+.headerH1 {
+  text-align: center;
+  margin: 8px;
+}
+
+.avtarInfo {
+  border: 1px solid;
+  border-radius: 6px;
+  margin: 0px 53px 0px 46px;
+  font-family: "circular";
+  padding: 12px;
+}
+
+#userInputDev {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  margin: 5px 0px 5px 5px;
+}
+
+#userInputDev > input {
+  height: 29px;
+  width: 200px;
+  border-radius: 13px;
+  padding-left: 4px;
+}
+
+#userInputDev > button {
+  margin-left: 15px;
+  border: 2px solid;
+  background-color: cornflowerblue;
+  padding: 8px;
+  border-radius: 26px;
+  cursor: pointer;
+}
+#userInputDev > button :hover {
+  background-color: rgb(23, 80, 186);
+}
+
+#chatHistory {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+#chatHistory > div {
+  width: 30%;
+  border: 1px solid;
+}
+
+#createAvtarButton {
+  width: 212px;
+  height: 38px;
+  border-radius: 15px;
+  border: none;
+  background-color: #ca7e7e;
+  font-size: medium;
+  font-weight: 700;
+  cursor: pointer;
+}
+#createAvtarButton:hover {
+  background-color: #e93939;
+  cursor: pointer;
+}

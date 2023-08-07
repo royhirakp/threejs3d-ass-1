@@ -3,13 +3,41 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 import * as dat from "dat.gui";
+// live chat functionality // multiplayer app
+//************************************* */
+import io from "socket.io-client";
+const socket = io.connect("https://socket-io-express-server.onrender.com");
+
+document.getElementById("sendMessegeButton").addEventListener("click", () => {
+  console.log("clickeddddddddd");
+  let inputMessege = document.getElementById("inputMessege").value;
+  console.log(inputMessege);
+  socket.emit("send_message", { messege: inputMessege });
+
+  const listItem = document.createElement("li");
+  listItem.textContent = inputMessege;
+  const listElement = document.getElementById("sendList");
+  listElement.appendChild(listItem);
+});
+
+socket.on("receive_message", (data, i) => {
+  data = data.messege;
+  console.log("Data :", data, "I:", i);
+  if (data !== "") {
+    const listItem = document.createElement("li");
+    listItem.textContent = data;
+    const listElement = document.getElementById("dataList");
+    listElement.appendChild(listItem);
+  }
+});
+
+//************************************* */
 const renderer = new THREE.WebGLRenderer();
 //ADDING SHADOW
 renderer.shadowMap.enabled = true;
 renderer.setSize(window.innerWidth, window.innerHeight);
 const container = document.getElementById("threejs-canvas-container");
 container.appendChild(renderer.domElement);
-// document.body.appendChild(renderer.domElement);
 
 // create seen
 const scene = new THREE.Scene();
@@ -101,35 +129,35 @@ renderer.setClearColor(0xffea00);
 //  the colur , and other featurs
 const gui = new dat.GUI();
 
-const option = {
-  //
-  cameraP_X: -10,
-  cameraP_Y: 30,
-  cameraP_Z: 30,
-  sphereColo: "#ffea00",
-  wireframe55: true,
-  speed: 0.01,
-  angle: 0.2,
-  penumbra: 1,
-  intensity: 20,
-  Yposition: 10,
-};
-gui.add(option, "cameraP_X").onChange((e) => {
-  camera.position.set(e, option.cameraP_Y, option.cameraP_Z);
-});
-gui.addColor(option, "sphereColo").onChange(function (e) {
-  //   spire.material.color.set(e);
-});
+// const option = {
+//   //
+//   cameraP_X: -10,
+//   cameraP_Y: 30,
+//   cameraP_Z: 30,
+//   sphereColo: "#ffea00",
+//   wireframe55: true,
+//   speed: 0.01,
+//   angle: 0.2,
+//   penumbra: 1,
+//   intensity: 20,
+//   Yposition: 10,
+// };
+// gui.add(option, "cameraP_X").onChange((e) => {
+//   camera.position.set(e, option.cameraP_Y, option.cameraP_Z);
+// });
+// gui.addColor(option, "sphereColo").onChange(function (e) {
+//   //   spire.material.color.set(e);
+// });
 
-gui.add(option, "wireframe55").onChange((e) => {
-  //   spire.material.wireframe = e;
-});
-gui.add(option, "cameraP_X", 0, 10);
-gui.add(option, "speed", 0, 0.1);
-gui.add(option, "angle", 0, 1);
-gui.add(option, "penumbra", 0, 10);
-gui.add(option, "intensity", 0, 300);
-gui.add(option, "Yposition", 0, 100);
+// gui.add(option, "wireframe55").onChange((e) => {
+//   //   spire.material.wireframe = e;
+// });
+// gui.add(option, "cameraP_X", 0, 10);
+// gui.add(option, "speed", 0, 0.1);
+// gui.add(option, "angle", 0, 1);
+// gui.add(option, "penumbra", 0, 10);
+// gui.add(option, "intensity", 0, 300);
+// gui.add(option, "Yposition", 0, 100);
 // variable for bounce the spire
 
 let step = 0;
@@ -232,51 +260,6 @@ rgbeLoader.load("./MR_INT-005_WhiteNeons_NAD.hdr", function (texture) {
     model.rotation.z = Math.PI / 2;
   });
 });
-// make a function for rotate the the box
-function animate(time) {
-  step = step + option.speed;
-
-  rayCaster.setFromCamera(mousePosition, camera);
-  renderer.render(scene, camera);
-}
-
-// add the function to the loop
-renderer.setAnimationLoop(animate);
-// renderer.render(scene, camera);
-
-/// resize the windp after change the browser window size
-
-renderer.domElement.addEventListener("click", (event) => {
-  // console.log("workingggggggg");
-  const mouse = new THREE.Vector2();
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-  // Define a Raycaster to check for intersections
-  const raycaster = new THREE.Raycaster();
-  raycaster.setFromCamera(mouse, camera);
-
-  const intersects = raycaster.intersectObjects(scene.children);
-  for (const intersect of intersects) {
-    if (intersect.object === plane5) {
-      console.log("Plane 5 clicked");
-      break; // Break the loop, since we only want to handle the first intersection with the plane
-    }
-    if (intersect.object === plane1) {
-      camera.position.set(-10, 10, 0); // x, yz
-    }
-    if (intersect.object === table) {
-      console.log("table clicked");
-      camera.position.set(-10, 10, 0); // x, yz
-    }
-  }
-});
-
-window.addEventListener("resize", function () {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
 
 /// ******************************CODE FOR AVTAR CREATION *********************
 const subdomain = "app1-l6nouw";
@@ -344,4 +327,44 @@ function parse(event) {
     return null;
   }
 }
-//*********************CODE FOR AVTAR****************** */
+//******************end***CODE FOR AVTAR****************** */
+function animate(time) {
+  rayCaster.setFromCamera(mousePosition, camera);
+  renderer.render(scene, camera);
+}
+
+// add the function to the loop
+renderer.setAnimationLoop(animate);
+renderer.render(scene, camera);
+
+/// resize the windp after change the browser window size
+renderer.domElement.addEventListener("click", (event) => {
+  const mouse = new THREE.Vector2();
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  // Define a Raycaster to check for intersections
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects(scene.children);
+  for (const intersect of intersects) {
+    if (intersect.object === plane5) {
+      console.log("Plane 5 clicked");
+      break; // Break the loop, since we only want to handle the first intersection with the plane
+    }
+    if (intersect.object === plane1) {
+      camera.position.set(-10, 10, 0); // x, yz
+    }
+    if (intersect.object === table) {
+      console.log("table clicked");
+      camera.position.set(-10, 10, 0); // x, yz
+    }
+  }
+});
+
+window.addEventListener("resize", function () {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});

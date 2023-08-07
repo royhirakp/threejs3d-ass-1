@@ -4,35 +4,49 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>dioc</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-      }
-      .frame {
-        width: 1080px;
-        height: 800px;
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-        padding: 20px;
-        font-size: 14px;
-        border: none;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Three js Assingmnet</h1>
+    <h1 class="headerH1">Three js Assingmnet</h1>
 
     <div class="makeYourAvatar">
-      <u> <p>get your Avtar for the game</p></u>
-      <p>Click on the buttion and create your avatar</p>
-      <input
-        type="button"
-        value="Open Ready Player Me"
-        onClick="displayIframe()"
-      />
-      <p id="avatarUrl">Avatar URL:</p>
+      <div class="avtarInfo">
+        <u> <p>create your Avtar for the game</p></u>
+        <p>Click on the buttion, a iframe will open and create your avatar.</p>
+        <input
+          id="createAvtarButton"
+          type="button"
+          value="Open Ready Player Me"
+          onClick="displayIframe()"
+        />
+        <p id="avatarUrl">Avatar URL:</p>
+      </div>
+      <p style="text-align: center">
+        <u><i>send messege to your partner: </i></u>
+      </p>
+      <div id="userInputDev">
+        <input
+          type="text"
+          id="inputMessege"
+          placeholder="type your messege..."
+        />
+        <button id="sendMessegeButton">send messege</button>
+      </div>
+      <div style="padding-left: 103px">
+        <u> <p>Chats:</p></u>
+        <div id="chatHistory">
+          <div>
+            <ul id="dataList">
+              <li>messege recived:</li>
+            </ul>
+          </div>
+          <div>
+            <ul id="sendList">
+              <li>send messege:</li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
       <iframe
         id="frame"
@@ -41,6 +55,7 @@
         hidden
       ></iframe>
     </div>
+
     <div id="threejs-canvas-container"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/GLTFLoader.js"></script>
 
