@@ -3,13 +3,14 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 import * as dat from "dat.gui";
-
 const renderer = new THREE.WebGLRenderer();
-
 //ADDING SHADOW
 renderer.shadowMap.enabled = true;
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+const container = document.getElementById("threejs-canvas-container");
+
+container.appendChild(renderer.domElement);
+// document.body.appendChild(renderer.domElement);
 
 // create seen
 const scene = new THREE.Scene();
@@ -271,8 +272,77 @@ renderer.domElement.addEventListener("click", (event) => {
     }
   }
 });
+
 window.addEventListener("resize", function () {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+/// ******************************CODE FOR AVTAR CREATION *********************
+const subdomain = "demo"; // Replace with your custom subdomain
+const frame = document.getElementById("frame");
+frame.src = `https://${subdomain}.readyplayer.me/avatar?frameApi`;
+
+window.addEventListener("message", subscribe);
+document.addEventListener("message", subscribe);
+
+function subscribe(event) {
+  const json = parse(event);
+
+  if (json?.source !== "readyplayerme") {
+    return;
+  }
+
+  // Susbribe to all events sent from Ready Player Me once frame is ready
+  if (json.eventName === "v1.frame.ready") {
+    frame.contentWindow.postMessage(
+      JSON.stringify({
+        target: "readyplayerme",
+        type: "subscribe",
+        eventName: "v1.**",
+      }),
+      "*"
+    );
+  }
+
+  // Get avatar GLB URL
+  if (json.eventName === "v1.avatar.exported") {
+    console.log(`Avatar URL: ${json.data.url}`);
+    document.getElementById(
+      "avatarUrl"
+    ).innerHTML = `Avatar URL: ${json.data.url}`;
+    console.log("url: ", json.data.url);
+    createdAvtarurl = json.data.url;
+    // add ready pleat me model
+
+    gltfLoader.load(
+      json.data.url,
+      (gltf) => {
+        const mesh = gltf.scene;
+        mesh.scale.set(5, 5, 5);
+        scene.add(mesh);
+      },
+      undefined,
+      (error) => {
+        console.error("Error loading the 3D model:", error);
+      }
+    );
+
+    document.getElementById("frame").hidden = true;
+  }
+
+  // Get user id
+  if (json.eventName === "v1.user.set") {
+    console.log(`User with id ${json.data.id} set: ${JSON.stringify(json)}`);
+  }
+}
+
+function parse(event) {
+  try {
+    return JSON.parse(event.data);
+  } catch (error) {
+    return null;
+  }
+}
+//*********************CODE FOR AVTAR****************** */

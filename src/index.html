@@ -9,9 +9,46 @@
         margin: 0;
         padding: 0;
       }
+      .frame {
+        width: 1080px;
+        height: 800px;
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+        padding: 20px;
+        font-size: 14px;
+        border: none;
+      }
     </style>
   </head>
   <body>
+    <h1>Three js Assingmnet</h1>
+
+    <div class="makeYourAvatar">
+      <u> <p>get your Avtar for the game</p></u>
+      <p>Click on the buttion and create your avatar</p>
+      <input
+        type="button"
+        value="Open Ready Player Me"
+        onClick="displayIframe()"
+      />
+      <p id="avatarUrl">Avatar URL:</p>
+
+      <iframe
+        id="frame"
+        class="frame"
+        allow="camera *; microphone *; clipboard-write"
+        hidden
+      ></iframe>
+    </div>
+    <div id="threejs-canvas-container"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/GLTFLoader.js"></script>
+
     <script src="./js/script.js" type="module"></script>
+    <script>
+      function displayIframe() {
+        document.getElementById("frame").hidden = false;
+      }
+    </script>
   </body>
 </html>
